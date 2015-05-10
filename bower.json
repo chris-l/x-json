@@ -1,0 +1,21 @@
+{
+  "name": "x-json",
+  "version": "0.1.0",
+  "authors": [
+    "Christopher Luna <dev@christopher-luna.com>"
+  ],
+  "main": "x-json.html",
+  "description": "Custom element to display a (formatted and prettified) JSON",
+  "keywords": [
+    "polymer",
+    "json",
+    "pretty-print",
+    "prettyprint",
+    "web-components"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components"
+  ]
+}
