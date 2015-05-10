@@ -92,6 +92,7 @@
       if (typeof this.data === 'string') {
         if (this.data === '') {
           this.$.container.innerHTML = '';
+          return;
         }
         data = JSON.parse(this.data);
       }
