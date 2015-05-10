@@ -3,9 +3,23 @@
 
 (function () {
   'use strict';
+  var collapseFunction;
   function isCollapsible(obj) {
     return Array.isArray(obj) || (typeof obj === 'object' && obj !== null);
   }
+  collapseFunction = function (collapser) {
+    collapser.addEventListener('click', function () {
+      var ul = this.parentNode.getElementsByTagName('ul')[0];
+
+      if (ul.style.display === 'none') {
+        ul.style.display = 'block';
+        this.innerHTML = '-';
+      } else {
+        ul.style.display = 'none';
+        this.innerHTML = '+';
+      }
+    });
+  };
 
   function str(obj) {
     var head, elements, tail, collapser;
@@ -83,6 +97,14 @@
       }
 
       this.$.container.innerHTML = str(data);
+
+
+      // Adding the function to collapse
+      (function (container) {
+        var list = container.getElementsByClassName('collapser');
+
+        Array.prototype.forEach.call(list, collapseFunction);
+      }(this.$.container));
 
     }
   });
