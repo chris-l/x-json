@@ -1,6 +1,6 @@
 {
   "name": "x-json",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "authors": [
     "Christopher Luna <dev@christopher-luna.com>"
   ],
@@ -18,5 +18,8 @@
     "*/.*",
     "node_modules",
     "bower_components"
-  ]
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5"
+  }
 }
