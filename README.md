@@ -5,6 +5,14 @@
 
 Is inspired by Goldark/ng-json-explorer for angular, and is actually using the same stylesheet. (But is not using any of the JavaScript code)
 
+## Installation
+
+You can just copy the `x-json.html`, `x-json.js` and `x-json.css` files somewhere onto your server, or you can use bower:
+
+```bash
+bower install --save x-json
+```
+
 ## Usage
 
 ```html
