@@ -25,6 +25,7 @@ After that you can use it like this:
 
 ```html
 <x-json data="{{obj}}"></x-json>
+```
 
 ## License
 
