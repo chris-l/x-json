@@ -5,6 +5,10 @@
 
 Is inspired by Goldark/ng-json-explorer for angular, and is actually using the same stylesheet. (But is not using any of the JavaScript code)
 
+## Demo
+
+Check a demo here: http://chris-l.github.io/x-json/
+
 ## Installation
 
 You can just copy the `x-json.html`, `x-json.js` and `x-json.css` files somewhere onto your server, or you can use bower:
