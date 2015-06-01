@@ -3,7 +3,7 @@
 
 **&lt;x-json&gt;** is a web component for pretty-print and display a JSON string. (or an object that can be converted to JSON)
 
-Is inspired by Goldark/ng-json-explorer for angular, and is actually using the same stylesheet. (But is not using any of the JavaScript code)
+Is inspired by [Goldark/ng-json-explorer](https://github.com/Goldark/ng-json-explorer) for angular, and is actually using the same stylesheet. (But is not using any of the JavaScript code)
 
 ## Demo
 

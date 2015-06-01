@@ -84,25 +84,30 @@
   }
 
 
-  Polymer('x-json', {
-    data: '',
-    dataChanged: function () {
-      var data = this.data;
+  Polymer({
+    is : 'x-json',
+    properties : {
+      data : {
+        type : Array,
+        observer : 'dataChanged'
+      }
+    },
+    dataChanged: function (data) {
 
-      if (typeof this.data === 'string') {
-        if (this.data === '') {
-          this.$.container.innerHTML = '';
-          return;
-        }
-        data = JSON.parse(this.data);
+      if (data === '') {
+        this.$.container.innerHTML = '';
+        return;
+      }
+      if (typeof data !== 'string') {
+        data = JSON.stringify(data);
       }
 
-      this.$.container.innerHTML = str(data);
+      this.$.container.innerHTML = str(JSON.parse(data));
 
 
       // Adding the function to collapse
       (function (container) {
-        var list = container.getElementsByClassName('collapser');
+        var list = Polymer.dom(container).querySelectorAll('.collapser');
 
         Array.prototype.forEach.call(list, collapseFunction);
       }(this.$.container));

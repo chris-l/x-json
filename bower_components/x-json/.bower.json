@@ -1,5 +1,6 @@
 {
   "name": "x-json",
+  "version": "0.1.4",
   "authors": [
     "Christopher Luna <dev@christopher-luna.com>"
   ],
@@ -19,17 +20,17 @@
     "bower_components"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5"
+    "polymer": "Polymer/polymer#^1.0"
   },
   "homepage": "https://github.com/chris-l/x-json",
-  "_release": "337a23ad11",
+  "_release": "0.1.4",
   "_resolution": {
-    "type": "branch",
-    "branch": "master",
-    "commit": "337a23ad115319cb3a54aede731ba6c1128f0a18"
+    "type": "version",
+    "tag": "v0.1.4",
+    "commit": "431b7accacbe5faf43d4c8ae8d8114d0f352c287"
   },
   "_source": "git://github.com/chris-l/x-json.git",
-  "_target": "*",
+  "_target": "~0.1.4",
   "_originalSource": "x-json",
   "_direct": true
 }
