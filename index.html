@@ -5,38 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>&lt;x-json&gt; demo</title>
+    <!-- Conditionally load WC polyfills -->
+    <!-- Thanks to https://github.com/geelen/x-gif for the snippet -->
     <script>if (!('registerElement' in document
       && 'createShadowRoot' in HTMLElement.prototype
       && 'import' in document.createElement('link')
       && 'content' in document.createElement('template'))) {
-          document.write('<script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"><\/script>');
+            document.write('<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"><\/script>');
       }</script>
-    <link rel="import" href="bower_components/polymer/polymer.html">
+    <script>
+      window.Polymer = window.Polymer || {};
+      window.Polymer.dom = 'shadow';
+    </script>
     <link rel="import" href="bower_components/x-json/x-json.html">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body unresolved>
-    <dom-module id="home-page">
-      <template>
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3>&lt;x-json&gt;</h3>
-          </div>
-          <div class="panel-body">
-            <x-json id="myjson" data="{{info}}"></x-json>
-          </div>
+    <div class="container">
+      <h1>&lt;x-json&gt; demo</h1>
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3>&lt;x-json&gt;</h3>
         </div>
-      </template>
-      <script>
-        Polymer({
-          is : 'home-page',
-          properties : {
-            info : {
-              type : Object
-            }
-          },
-          ready : function () {
-            this.info = {
+        <div class="panel-body">
+          <x-json id="myjson"></x-json>
+        </div>
+        <script>
+          (function () {
+            var myjson = document.querySelector('#myjson');
+
+            myjson.data = {
               _id: "554f2449fc3d7d8f8e9554c1",
               index: 0,
               guid: "47d26d82-1c94-492f-a0b9-824a17002880",
@@ -81,13 +79,9 @@
               greeting: "Hello, Everett Suarez! You have 5 unread messages.",
               favoriteFruit: "banana"
             };
-          }
-        });
-      </script>
-    </dom-module>
-    <div class="container">
-      <h1>&lt;x-json&gt; demo</h1>
-      <home-page></home-page>
+          }());
+        </script>
+      </div>
     </div>
-</body>
+  </body>
 </html>

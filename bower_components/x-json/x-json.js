@@ -88,7 +88,7 @@
     is : 'x-json',
     properties : {
       data : {
-        type : Array,
+        value : '',
         observer : 'dataChanged'
       }
     },
@@ -112,6 +112,9 @@
         Array.prototype.forEach.call(list, collapseFunction);
       }(this.$.container));
 
+    },
+    ready : function () {
+      this.dataChanged(this.data);
     }
   });
 }());
