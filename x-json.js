@@ -112,6 +112,9 @@
         Array.prototype.forEach.call(list, collapseFunction);
       }(this.$.container));
 
+    },
+    ready : function () {
+      this.dataChanged(this.data);
     }
   });
 }());
