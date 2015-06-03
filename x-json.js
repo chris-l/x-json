@@ -88,7 +88,7 @@
     is : 'x-json',
     properties : {
       data : {
-        type : Array,
+        value : '',
         observer : 'dataChanged'
       }
     },
