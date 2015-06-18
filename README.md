@@ -11,7 +11,7 @@ Check a demo here: http://chris-l.github.io/x-json/
 
 ## Installation
 
-You can just copy the `x-json.html`, `x-json.js` and `x-json.css` files somewhere onto your server, or you can use bower:
+You can just copy the `dist/x-json.html` file somewhere onto your server, or you can use bower:
 
 ```bash
 bower install --save x-json
@@ -36,8 +36,13 @@ bower install --save x-json
 After that you can use it like this:
 
 ```html
-<x-json data="{{obj}}"></x-json>
+<x-json id="myjson"></x-json>
+<script>
+  document.getElementById('myjson').data = obj;
+</script>
 ```
+
+If you are using Polymer, you can do it with binding like this `data="{{obj}}"` instead.
 
 ## License
 
