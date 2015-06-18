@@ -7,7 +7,6 @@
   "main": "dist/x-json.html",
   "description": "Custom element to display a (formatted and prettified) JSON",
   "keywords": [
-    "polymer",
     "json",
     "pretty-print",
     "prettyprint",
@@ -18,8 +17,5 @@
     "*/.*",
     "node_modules",
     "bower_components"
-  ],
-  "dependencies": {
-    "polymer": "Polymer/polymer#^1.0"
-  }
+  ]
 }
