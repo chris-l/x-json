@@ -4,8 +4,7 @@
   @element x-json
   @demo https://chris-l.github.io/x-json/
 -->
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<dom-module id="x-json">
+<template id="x-json">
   <style>
     :host .hidden, ::shadow .hidden {
       display: none;
@@ -88,8 +87,6 @@
       color: #A52A2A;
     }
   </style>
-  <template>
-    <div id="container"></div>
-  </template>
-  <script src="x-json.js"></script>
-</dom-module>
+  <div id="container"></div>
+</template>
+<script src="x-json.js"></script>
