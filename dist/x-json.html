@@ -1,0 +1,95 @@
+<!--
+  <x-json>
+
+  @element x-json
+  @demo https://chris-l.github.io/x-json/
+--><html><head><link rel="import" href="../../polymer/polymer.html">
+</head><body><dom-module id="x-json">
+  <style>
+    :host .hidden, ::shadow .hidden {
+      display: none;
+    }
+
+    :host .prop, ::shadow .prop {
+      font-weight: bold;
+    }
+
+    :host .null, ::shadow .null {
+      color: red;
+    }
+
+    :host .bool, ::shadow .bool {
+      color: blue;
+    }
+
+    :host .num, ::shadow .num {
+      color: blue;
+    }
+
+    :host .string, ::shadow .string {
+      color: green;
+      white-space: pre-wrap;
+    }
+
+    :host .collapser, ::shadow .collapser {
+      position: absolute;
+      left: -1em;
+      cursor: pointer;
+      -moz-user-select: none;
+      color: rgb(249, 39, 83);
+      text-decoration: none;
+    }
+
+    :host .q, ::shadow .q {
+      display: inline-block;
+      width: 0px;
+      color: transparent;
+    }
+
+    :host li, ::shadow li {
+      position: relative;
+    }
+
+    :host .error, ::shadow .error {
+      -moz-border-radius: 8px;
+      border: 1px solid #970000;
+      background-color: #F7E8E8;
+      margin: .5em;
+      padding: .5em;
+    }
+
+    :host .errormessage, ::shadow .errormessage {
+      font-family: monospace;
+    }
+
+    :host {
+      font-family: monospace;
+      font-size: 1.1em;
+      white-space: pre-wrap;
+    }
+
+    :host ul, ::shadow ul {
+      list-style: none;
+      margin: 0 0 0 2em;
+      padding: 0;
+    }
+
+    :host h1, ::shadow h1 {
+      font-size: 1.2em;
+    }
+
+    :host .callback + #json, ::shadow .callback + #json {
+      padding-left: 1em;
+    }
+
+    :host .callback, ::shadow .callback {
+      font-family: monospace;
+      color: #A52A2A;
+    }
+  </style>
+  <template>
+    <div id="container"></div>
+  </template>
+  <script>!function(){"use strict";function a(a){return Array.isArray(a)||"object"==typeof a&&null!==a}function b(c){var d,e,f,g;return g='<div class="collapser">-</div>',Array.isArray(c)?(d='[<ul class="array collapsible">',e=c.map(function(c){var d=a(c)?g:"";return"<li>"+d+b(c)}),f=function(a){var b="</ul>]";return a.length>0?"</li>"+b:b}(e),d+e.join(",</li>")+f):"object"==typeof c?null===c?'<span class="null">null</span>':(d='{<ul class="obj collapsible">',e=Object.keys(c).map(function(d){var e=a(c[d])?g:"";return"<li>"+e+'<span class="prop"><span class="q">"</span>'+d+'<span class="q">"</span></span>: '+b(c[d])}),f=function(a){var b="</ul>}";return a.length>0?"</li>"+b:b}(e),d+e.join(",</li>")+f):"number"==typeof c?'<span class="num">'+JSON.stringify(c)+"</span>":"string"==typeof c?'<span class="string">'+JSON.stringify(c)+"</span>":"boolean"==typeof c?'<span class="bool">'+JSON.stringify(c)+"</span>":"<span>"+JSON.stringify(c,null," ")+"</span>"}var c;c=function(a){a.addEventListener("click",function(){var a=this.parentNode.getElementsByTagName("ul")[0];"none"===a.style.display?(a.style.display="block",this.innerHTML="-"):(a.style.display="none",this.innerHTML="+")})},Polymer({is:"x-json",properties:{data:{value:"",observer:"dataChanged"}},dataChanged:function(a){return""===a?void(this.$.container.innerHTML=""):("string"!=typeof a&&(a=JSON.stringify(a)),this.$.container.innerHTML=b(JSON.parse(a)),void function(a){var b=Polymer.dom(a).querySelectorAll(".collapser");Array.prototype.forEach.call(b,c)}(this.$.container))},ready:function(){this.dataChanged(this.data)}})}();</script>
+</dom-module>
+</body></html>

@@ -4,7 +4,7 @@
   "authors": [
     "Christopher Luna <dev@christopher-luna.com>"
   ],
-  "main": "x-json.html",
+  "main": "dist/x-json.html",
   "description": "Custom element to display a (formatted and prettified) JSON",
   "keywords": [
     "polymer",
