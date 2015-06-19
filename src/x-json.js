@@ -78,7 +78,7 @@
       }
 
       if (obj.getAttribute(attrName) === null) {
-        if (typeof obj.props[name] !== 'object') {
+        if (obj.props[name] && typeof obj.props[name] !== 'object') {
           obj.setAttribute(attrName, obj.props[name]);
         } else {
           obj.setAttribute(attrName, value);
