@@ -27,7 +27,7 @@ bower install --save x-json
     && 'content' in document.createElement('template')) {
     // We're using a browser with native WC support!
   } else {
-    document.write('<script src="https:\/\/cdnjs.cloudflare.com/ajax/libs/polymer/0.3.4/platform.js"><\/script>')
+    document.write('<script src="https:\/\/cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.5/webcomponents.min.js"><\/script>')
   }
 </script>
 <link rel="import" href="x-json.html">
