@@ -1,12 +1,8 @@
-/*jslint indent: 2, nomen: true, regexp: true */
-/*global HTMLElement, map, window, document*/
+/*jslint browser: true, indent: 2, nomen: true */
 
-(function () {
+(function (window) {
   'use strict';
-  var importDoc, collapseFunction, xjsonPrototype, properties, map;
-
-  map = Function.prototype.call.bind(Array.prototype.map);
-  importDoc = (document._currentScript || document.currentScript).ownerDocument;
+  var collapseFunction, xjsonPrototype, properties, addShadowRoot, declaredProps;
 
 
   /**
@@ -18,29 +14,37 @@
    * @param {string} [elementName] The name element, used for rewriting the css.
    *                 If omited, it will use the idTemplate as name.
    */
-  function addShadowRoot(obj, idTemplate, elementName) {
-    var template, styleStr, newStyle, hasStyle, dummy;
+  addShadowRoot = (function () {
+    var importDoc, shimStyle;
+    importDoc = (document._currentScript || document.currentScript).ownerDocument;
 
-    obj.root = obj.createShadowRoot();
-    template = importDoc.querySelector('#' + idTemplate);
-    obj.root.appendChild(template.content.cloneNode(true));
-
-    hasStyle = /<style(.|\n)*<\/style>/m;
-    if (window.ShadowDOMPolyfill && hasStyle.test(template.innerHTML)) {
-      dummy = document.createElement('head');
-      dummy.innerHTML = template.innerHTML;
-      styleStr = map(dummy.getElementsByTagName('style'), function (style) {
-        return style.innerHTML
-          .replace(/:host/gm, elementName || idTemplate).replace(/::content/gm, '')
-          .trim();
-      }).join("\n");
-      dummy = null;
-
-      newStyle = document.createElement('style');
-      newStyle.innerHTML = styleStr;
-      document.getElementsByTagName('head')[0].appendChild(newStyle);
+    if (window.ShadowDOMPolyfill) {
+      shimStyle = document.createElement('style');
+      document.head.insertBefore(shimStyle, document.head.firstChild);
     }
-  }
+
+    return function (obj, idTemplate, elementName) {
+      var template, list;
+
+      obj.root = obj.createShadowRoot();
+      template = importDoc.getElementById(idTemplate);
+      obj.root.appendChild(template.content.cloneNode(true));
+
+      if (window.ShadowDOMPolyfill) {
+        list = obj.root.getElementsByTagName('style');
+        Array.prototype.forEach.call(list, function (style) {
+          if (!template.shimmed) {
+            shimStyle.innerHTML += style.innerHTML
+              .replace(/:host\b/gm, elementName || idTemplate)
+              .replace(/::shadow\b/gm, ' ')
+              .replace(/::content\b/gm, ' ');
+          }
+          style.parentNode.removeChild(style);
+        });
+        template.shimmed = true;
+      }
+    };
+  }());
 
 
 
@@ -48,58 +52,63 @@
    * Uses Object.defineProperty to add setters and getters
    * to each property of the element.
    *
-   * Each property is reflected to the equivalent DOM attribute
    * @param {object} obj The element to add the shadow root.
    * @param {object} props Object with the properties.
    */
-  function prepareProperties(obj, props) {
+  declaredProps = (function () {
+    var exports = {};
+
     function toHyphens(str) {
       return str.replace(/([A-Z])/g, '-$1').toLowerCase();
     }
-    function convert(val, desc) {
-      if (desc.type === Number) {
-        return parseInt(val, 10);
-      }
-      if (desc.type === String) {
-        return String(val);
-      }
-      return val;
+    function toCamelCase(str) {
+      return str.split('-')
+        .map(function (x, i) {
+          return i === 0 ? x : x[0].toUpperCase() + x.slice(1);
+        }).join('');
     }
-    obj.props = {};
 
-    Object.keys(props).forEach(function (name) {
-      var attrName, desc, value;
-
-      desc = props[name];
-      attrName = toHyphens(name);
-      value = desc.value;
-      if (typeof value === 'function') {
-        value = value();
+    exports.syncProperty = function (obj, props, attr, val) {
+      var name = toCamelCase(attr);
+      if (props[name]) {
+        obj[name] = JSON.parse(val);
       }
+    };
 
-      if (obj.getAttribute(attrName) === null) {
-        if (obj.props[name] && typeof obj.props[name] !== 'object') {
-          obj.setAttribute(attrName, obj.props[name]);
-        } else {
-          obj.setAttribute(attrName, value);
-        }
-      }
-      Object.defineProperty(obj, name, {
-        get : function () {
-          return obj.props[name] || convert(obj.getAttribute(attrName), desc) || value;
-        },
-        set : function (val) {
-          obj.props[name] = val;
-          if (typeof val !== 'object') {
-            obj.setAttribute(attrName, val);
-          }
-          if (typeof obj[desc.observer] === 'function') {
-            obj[desc.observer](val);
-          }
-        }
+    exports.init = function (obj, props) {
+      Object.defineProperty(obj, 'props', {
+        enumerable : false,
+        configurable : true,
+        value : {}
       });
-    });
-  }
+
+      Object.keys(props).forEach(function (name) {
+        var attrName = toHyphens(name), desc, value;
+
+        desc = props[name].type ? props[name] : { type : props[name] };
+        value = typeof desc.value === 'function' ? desc.value() : desc.value;
+        obj.props[name] = obj[name] || value;
+
+        if (obj.getAttribute(attrName) !== null) {
+          obj.props[name] = JSON.parse(obj.getAttribute(attrName));
+        }
+        Object.defineProperty(obj, name, {
+          get : function () {
+            return obj.props[name] || JSON.parse(obj.getAttribute(attrName));
+          },
+          set : function (val) {
+            var old = obj.props[name];
+            obj.props[name] = val;
+            if (typeof obj[desc.observer] === 'function') {
+              obj[desc.observer](val, old);
+            }
+          }
+        });
+      });
+    };
+
+    return exports;
+  }());
 
   function isCollapsible(obj) {
     return Array.isArray(obj) || (typeof obj === 'object' && obj !== null);
@@ -181,10 +190,11 @@
   }
 
 
-  xjsonPrototype = Object.create(HTMLElement.prototype);
+  xjsonPrototype = Object.create(window.HTMLElement.prototype);
   properties = {
     data : {
       value : '',
+      type : 'Object',
       observer : 'dataChanged'
     }
   };
@@ -195,11 +205,7 @@
       container.innerHTML = '';
       return;
     }
-    if (typeof data !== 'string') {
-      data = JSON.stringify(data);
-    }
-
-    container.innerHTML = str(JSON.parse(data));
+    container.innerHTML = str(data);
 
 
     // Adding the function to collapse
@@ -210,13 +216,20 @@
     }(container));
 
   };
+
+  /*jslint unparam:true*/
+  xjsonPrototype.attributeChangedCallback = function (attr, oldVal, newVal) {
+    declaredProps.syncProperty(this, properties, attr, newVal);
+  };
+  /*jslint unparam:false*/
+
   xjsonPrototype.createdCallback = function () {
     addShadowRoot(this, 'x-json');
-    prepareProperties(this, properties);
+    declaredProps.init(this, properties);
     this.dataChanged(this.data);
   };
   document.registerElement('x-json', {
     prototype : xjsonPrototype
   });
-}());
+}(this));
 

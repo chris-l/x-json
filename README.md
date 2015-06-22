@@ -38,11 +38,18 @@ After that you can use it like this:
 ```html
 <x-json id="myjson"></x-json>
 <script>
+  var obj = { id : 1, name : 'some', list : [ 1,2,3 ] };
   document.getElementById('myjson').data = obj;
 </script>
 ```
 
-If you are using Polymer, you can do it with binding like this `data="{{obj}}"` instead.
+If you are using Polymer, you can do it with binding like this: `data="{{obj}}"`.
+
+You can also pass a JSON string as `data`:
+
+```html
+<x-json id="myjson" data="{&quot;list&quot;:[1,2,3]}"></x-json>
+```
 
 ## License
 
