@@ -154,6 +154,10 @@
       if (obj === null) {
         return '<span class="null">null</span>';
       }
+      // The case of date
+      if (obj.constructor === Date) {
+        return '<span class="string">' + JSON.stringify(obj) + '</span>';
+      }
 
       head = '{<ul class="obj collapsible">';
       elements = Object.keys(obj).map(function (key) {
